@@ -11,7 +11,7 @@ from datetime import datetime
 def do_pack():
     """(tar gzip the web_static folder into a 'folder/file_time.tgz' file)"""
     timed = datetime.now().strftime("%Y%m%d%H%M%S")
-    zipfile = "version/web_static_{}.tgz".format(timed)
+    zipfile = "versions/web_static_{}.tgz".format(timed)
 
     try:
         local("mkdir -p version")
