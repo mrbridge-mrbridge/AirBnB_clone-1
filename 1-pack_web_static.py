@@ -14,7 +14,7 @@ def do_pack():
     zipfile = "versions/web_static_{}.tgz".format(timed)
 
     try:
-        local("mkdir -p version")
+        local("mkdir -p versions")
         local("tar -czvf {} web_static".format(zipfile))
         return zipfile
     except Exception:
