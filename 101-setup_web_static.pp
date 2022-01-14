@@ -24,12 +24,12 @@ file { '404.html':
 
 exec { 'mkdir1':
   provider  => shell,
-  command   => 'mkdir -p /data/web_static/releases/test/',
+  command   => 'sudo mkdir -p /data/web_static/releases/test/',
 }
 
 exec { 'mkdir2':
   provider  => shell,
-  command   => 'mkdir -p /data/web_static/shared/',
+  command   => 'sudo mkdir -p /data/web_static/shared/',
 }
 
 # This is a short html
@@ -85,6 +85,6 @@ exec { 'symlinked':
 }
 
 service { 'nginx':
-  ensure    => running,
+  ensure    => 'running',
   require   => Package['nginx'],
 }
