@@ -41,9 +41,8 @@ $line1_string = "<!DOCTYPE html>
   <body>Welcome to MrBridge</body>
 </html>" 
 
-file { 'index.html':
-  ensure    => 'file',
-  content   => $line1_string,
+file_line { 'index.html':
+  line      => $line1_string,
   path      => '/data/web_static/releases/test/index.html',
 }
 
@@ -73,16 +72,15 @@ $line2_string = "server {
     }
 }" 
 
-file { 'default':
-  ensure    => 'file',
-  content   => $line2_string,
+file_line { 'default':
+  line      => $line2_string,
   path      => '/etc/nginx/sites-available/default',
 }
 
-exec { 'symlinked':
-  provider  => shell,
-  command   => 'sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled',
-}
+#exec { 'symlinked':
+#  provider  => shell,
+#  command   => 'sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled',
+#}
 
 service { 'nginx':
   ensure    => 'running',
