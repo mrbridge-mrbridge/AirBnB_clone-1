@@ -48,7 +48,7 @@ file { 'index.html':
 
 exec { 'other_tasks':
   provider  => shell,
-  command   => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current && chown -R ubuntu /data/ && chgrp -R ubuntu /data/',
+  command   => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current && sudo chown -R ubuntu /data/ && sudo chgrp -R ubuntu /data/',
 }
 
 # This is for a server block
@@ -76,6 +76,11 @@ file { 'default':
   ensure    => 'file',
   content   => $line2_string,
   path      => '/etc/nginx/sites-available/default',
+}
+
+exec { 'symlinked':
+  provider  => shell,
+  command   => 'sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled',
 }
 
 service { 'nginx':
