@@ -9,33 +9,27 @@ package { 'nginx':
   ensure    => installed,
 }
 
--> exec { 'config_nginx':
-  command   => 'sed -i "/listen 80 default_server/location /hbnb_static/ {\n\t\talias /data/web_static/current/;" /etc/nginx/sites-available/default',
-  path      => '/usr/bin',
-}
 
--> file { 'index.nginx-debian.html':
-  ensure    => 'file',
-  content   => 'Hello World',
-  path      => '/var/www/html/index.nginx-debian.html',
-}
+#-> file { 'index.nginx-debian.html':
+#  ensure    => 'file',
+#  content   => 'Hello World',
+#  path      => '/var/www/html/index.nginx-debian.html',
+#}
 
--> file { '404.html':
-  ensure    => 'file',
-  content   => 'Ceci n\'est pas une page',
-  path      => '/var/www/html/404.html',
-}
+#-> file { '404.html':
+#  ensure    => 'file',
+#  content   => 'Ceci n\'est pas une page',
+#  path      => '/var/www/html/404.html',
+#}
 
 -> exec { 'mkdir1':
   provider  => shell,
-  command   => 'mkdir -p /data/web_static/releases/test/',
-  path      => '/usr/bin',
+  command   => '/usr/bin/env mkdir -p /data/web_static/releases/test/',
 }
 
 -> exec { 'mkdir2':
   provider  => shell,
-  command   => 'mkdir -p /data/web_static/shared/',
-  path      => '/usr/bin',
+  command   => '/usr/bin/env mkdir -p /data/web_static/shared/',
 }
 
 -> exec { 'index.html':
@@ -53,6 +47,10 @@ package { 'nginx':
 #  provider  => shell,
 #  command   => 'sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled',
 #}
+
+-> exec { 'config_nginx':
+  command   => '/usr/bin/env sed -i "/listen 80 default_server/location /hbnb_static/ {\n\t\talias /data/web_static/current/;" /etc/nginx/sites-available/default',
+}
 
 -> service { 'nginx':
   ensure    => 'running',
