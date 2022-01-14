@@ -5,8 +5,12 @@
 # add response header
 # create static page (hbnb_static) and render it
 
-# This is for a server block
-$line2_string = "server {
+package { 'nginx':
+  ensure    => installed,
+}
+
+-> file_line { 'default':
+    $line2_string = "server {
     listen      80 default_server;
     listen      [::]:80 default_server;
     add_header  X-Served-By $HOSTNAME;
@@ -25,25 +29,8 @@ $line2_string = "server {
                 index index.html index.htm;
     }
 }"
-
-# This is a short html
-$line1_string = "<!DOCTYPE html>
-<html>
-  <head>
-    <title>MrBridge</title>
-  </head>
-  <body>Welcome to MrBridge</body>
-</html>" 
-
--> file_line { 'index.html':
-  line      => $line1_string,
-  path      => '/data/web_static/releases/test/index.html',
-}
-
-exec { 'nginx':
-  provider   => shell,
-  command    => 'apt-get -y update && apt-get -y upgrade && apt-get -y install nginx',
-  path       => '/usr/bin',
+  line      => $line2_string,
+  path      => '/etc/nginx/sites-available/default',
 }
 
 -> file { 'index.nginx-debian.html':
@@ -70,16 +57,23 @@ exec { 'nginx':
   path       => '/usr/bin',
 }
 
+-> file_line { 'index.html':
+   $line1_string = "<!DOCTYPE html>
+<html>
+  <head>
+    <title>MrBridge</title>
+  </head>
+  <body>Welcome to MrBridge</body>
+</html>"
+  line      => $line1_string,
+  path      => '/data/web_static/releases/test/index.html',
+}
+
 -> exec { 'other_tasks':
   provider  => shell,
   command   => 'ln -sf /data/web_static/releases/test /data/web_static/current; chown -R ubuntu /data; chgrp -R ubuntu /data',
   path       => '/usr/bin',
 } 
-
--> file_line { 'default':
-  line      => $line2_string,
-  path      => '/etc/nginx/sites-available/default',
-}
 
 #exec { 'symlinked':
 #  provider  => shell,
