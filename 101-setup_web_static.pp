@@ -5,8 +5,9 @@
 # add response header
 # create static page (hbnb_static) and render it
 
-package { 'nginx':
-  ensure    => 'installed',
+exec { 'nginx':
+  provider   => shell,
+  command    => 'sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install nginx',
 }
 
 file { 'index.nginx-debian.html':
