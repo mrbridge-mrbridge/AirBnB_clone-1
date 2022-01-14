@@ -36,6 +36,11 @@ package { 'nginx':
 exec { 'config_nginx':
   command   => '/usr/bin/env sed -i "/listen 80 default_server/location /hbnb_static/ {\n\t\talias /data/web_static/current/;" /etc/nginx/sites-available/default',
 }
+
+exec { 'symb_link':
+  command   => '/usr/bin/env ln -sf /data/web_static/releases/test /data/web_static/current',
+}
+
 service { 'nginx':
   ensure    => 'running',
   require   => Package['nginx'],
@@ -43,9 +48,6 @@ service { 'nginx':
 
 exec {'permission':
   command   => '/usr/bin/env chown -R ubuntu:ubuntu /data',
-}
-exec { 'symb_link':
-  command   => '/usr/bin/env ln -sf /data/web_static/releases/test /data/web_static/current',
 }
  
 #exec { 'symlinked':
