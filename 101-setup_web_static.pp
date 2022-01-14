@@ -5,52 +5,6 @@
 # add response header
 # create static page (hbnb_static) and render it
 
-exec { 'nginx':
-  provider   => shell,
-  command    => 'sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install nginx',
-}
-
-file { 'index.nginx-debian.html':
-  ensure    => 'file',
-  content   => 'Hello World',
-  path      => '/var/www/html/index.nginx-debian.html',
-}
-
-file { '404.html':
-  ensure    => 'file',
-  content   => 'Ceci n\'est pas une page',
-  path      => '/var/www/html/404.html',
-}
-
-exec { 'mkdir1':
-  provider  => shell,
-  command   => 'sudo mkdir -p /data/web_static/releases/test/',
-}
-
-exec { 'mkdir2':
-  provider  => shell,
-  command   => 'sudo mkdir -p /data/web_static/shared/',
-}
-
-# This is a short html
-$line1_string = "<!DOCTYPE html>
-<html>
-  <head>
-    <title>MrBridge</title>
-  </head>
-  <body>Welcome to MrBridge</body>
-</html>" 
-
-file_line { 'index.html':
-  line      => $line1_string,
-  path      => '/data/web_static/releases/test/index.html',
-}
-
-exec { 'other_tasks':
-  provider  => shell,
-  command   => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current && sudo chown -R ubuntu /data/ && sudo chgrp -R ubuntu /data/',
-}
-
 # This is for a server block
 $line2_string = "server {
     listen      80 default_server;
@@ -70,9 +24,59 @@ $line2_string = "server {
                 alias /data/web_static/current;
                 index index.html index.htm;
     }
-}" 
+}"
 
-file_line { 'default':
+# This is a short html
+$line1_string = "<!DOCTYPE html>
+<html>
+  <head>
+    <title>MrBridge</title>
+  </head>
+  <body>Welcome to MrBridge</body>
+</html>" 
+
+-> file_line { 'index.html':
+  line      => $line1_string,
+  path      => '/data/web_static/releases/test/index.html',
+}
+
+exec { 'nginx':
+  provider   => shell,
+  command    => 'apt-get -y update && apt-get -y upgrade && apt-get -y install nginx',
+  path       => '/usr/bin',
+}
+
+-> file { 'index.nginx-debian.html':
+  ensure    => 'file',
+  content   => 'Hello World',
+  path      => '/var/www/html/index.nginx-debian.html',
+}
+
+-> file { '404.html':
+  ensure    => 'file',
+  content   => 'Ceci n\'est pas une page',
+  path      => '/var/www/html/404.html',
+}
+
+-> exec { 'mkdir1':
+  provider  => shell,
+  command   => 'mkdir -p /data/web_static/releases/test/',
+  path       => '/usr/bin',
+}
+
+-> exec { 'mkdir2':
+  provider  => shell,
+  command   => 'mkdir -p /data/web_static/shared/',
+  path       => '/usr/bin',
+}
+
+-> exec { 'other_tasks':
+  provider  => shell,
+  command   => 'ln -sf /data/web_static/releases/test /data/web_static/current; chown -R ubuntu /data; chgrp -R ubuntu /data',
+  path       => '/usr/bin',
+} 
+
+-> file_line { 'default':
   line      => $line2_string,
   path      => '/etc/nginx/sites-available/default',
 }
@@ -82,7 +86,7 @@ file_line { 'default':
 #  command   => 'sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled',
 #}
 
-service { 'nginx':
+-> service { 'nginx':
   ensure    => 'running',
   require   => Package['nginx'],
 }
