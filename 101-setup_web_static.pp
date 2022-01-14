@@ -9,28 +9,9 @@ package { 'nginx':
   ensure    => installed,
 }
 
--> file_line { 'default':
-    $line2_string = "server {
-    listen      80 default_server;
-    listen      [::]:80 default_server;
-    add_header  X-Served-By $HOSTNAME;
-    root        /var/www/html;
-    index       index index.html index.htm index.nginx-debian.html;
-    location /redirect_me {
-                return 301 https://github.com/mrbridge-mrbridge/;
-    }
-    error_page 404 /404.html;
-    location = /404.html {
-                root /var/www/html;
-                internal;
-    }
-    location /hbnb_static {
-                alias /data/web_static/current;
-                index index.html index.htm;
-    }
-}"
-  line      => $line2_string,
-  path      => '/etc/nginx/sites-available/default',
+-> exec { 'config_nginx':
+  command   => 'sed -i "/listen 80 default_server/location /hbnb_static/ {\n\t\talias /data/web_static/current/;" /etc/nginx/sites-available/default',
+  path      => '/usr/bin',
 }
 
 -> file { 'index.nginx-debian.html':
@@ -48,31 +29,24 @@ package { 'nginx':
 -> exec { 'mkdir1':
   provider  => shell,
   command   => 'mkdir -p /data/web_static/releases/test/',
-  path       => '/usr/bin',
+  path      => '/usr/bin',
 }
 
 -> exec { 'mkdir2':
   provider  => shell,
   command   => 'mkdir -p /data/web_static/shared/',
-  path       => '/usr/bin',
+  path      => '/usr/bin',
 }
 
--> file_line { 'index.html':
-   $line1_string = "<!DOCTYPE html>
-<html>
-  <head>
-    <title>MrBridge</title>
-  </head>
-  <body>Welcome to MrBridge</body>
-</html>"
-  line      => $line1_string,
-  path      => '/data/web_static/releases/test/index.html',
+-> exec { 'index.html':
+  command   => 'echo "Welcome to MrBridge" > /data/web_static/releases/test/index.html',
+  path      => '/usr/bin',
 }
 
 -> exec { 'other_tasks':
   provider  => shell,
   command   => 'ln -sf /data/web_static/releases/test /data/web_static/current; chown -R ubuntu /data; chgrp -R ubuntu /data',
-  path       => '/usr/bin',
+  path      => '/usr/bin',
 } 
 
 #exec { 'symlinked':
