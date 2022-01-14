@@ -33,20 +33,24 @@ package { 'nginx':
 -> exec { 'index.html':
   command   => '/usr/bin/env echo "Welcome to MrBridge" > /data/web_static/releases/test/index.html',
 }
--> service { 'nginx':
+exec { 'config_nginx':
+  command   => '/usr/bin/env sed -i "/listen 80 default_server/location /hbnb_static/ {\n\t\talias /data/web_static/current/;" /etc/nginx/sites-available/default',
+}
+service { 'nginx':
   ensure    => 'running',
   require   => Package['nginx'],
 }
--> exec { 'other_tasks':
-  command   => '/usr/bin/env ln -sf /data/web_static/releases/test /data/web_static/current; /usr/bin/env chown -R ubuntu /data; /usr/bin/env chgrp -R ubuntu /data',
-} 
+
+exec {'permission':
+  command   => '/usr/bin/env chown -R ubuntu:ubuntu /data',
+}
+exec { 'symb_link':
+  command   => '/usr/bin/env ln -sf /data/web_static/releases/test /data/web_static/current',
+}
+ 
 #exec { 'symlinked':
 #  provider  => shell,
 #  command   => 'sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled',
-#}
-
-#-> exec { 'config_nginx':
-#  command   => '/usr/bin/env sed -i "/listen 80 default_server/location /hbnb_static/ {\n\t\talias /data/web_static/current/;" /etc/nginx/sites-available/default',
 #}
 
 #-> service { 'nginx':
