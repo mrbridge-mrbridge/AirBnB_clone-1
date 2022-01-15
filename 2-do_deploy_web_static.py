@@ -8,7 +8,7 @@
 """
 from fabric.api import local, run, env, put
 from datetime import datetime
-from os.path import isfile, basename, splitext
+from os.path import isfile, split, splitext
 
 
 env.hosts = ['34.73.135.187', '3.237.43.34']
@@ -33,7 +33,7 @@ def do_deploy(archive_path):
 
     try:
         # strip file from path
-        archive_file_ext = basement("archive_path")
+        archive_file_ext = archive_path.split("/")[-1]
 
         # Get filename without extension
         archive_file, ext = splitext("archive_file_ext")
