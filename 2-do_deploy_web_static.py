@@ -50,8 +50,8 @@ def do_deploy(archive_path):
         # delete archive from old folder
         run("rm {}".format(recieved))
 
-        run("mv {}/web_static/* {}".format(new_dir_name, new_dir_name))
-        run("rm {}/web_static/".format(new_dir_name))
+        #run("mv {}/web_static/* {}".format(new_dir_name, new_dir_name))
+        #run("rm {}/web_static/".format(new_dir_name))
 
         # delete old symlink
         run("rm -rf /data/web_static/current")
