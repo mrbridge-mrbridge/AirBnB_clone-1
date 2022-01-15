@@ -28,10 +28,10 @@ def do_pack():
 
 def do_deploy(archive_path):
     """deploys an archive to web-server-1 and web-server-2"""
-    if not os.path.isfile(archive_path):
+    if not isfile(archive_path):
         return False
 
-    Try:
+    try:
         # strip file from path
         archive_file_ext = basement("archive_path")
 
