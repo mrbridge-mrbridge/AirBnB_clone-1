@@ -8,7 +8,7 @@
 """
 from fabric.api import local, run, env, put
 from datetime import datetime
-from os.path import isfile, split
+from os.path import isfile, split, splitext
 
 
 env.hosts = ['34.73.135.187', '3.237.43.34']
@@ -36,7 +36,7 @@ def do_deploy(archive_path):
         archive_file_ext = archive_path.split("/")[-1]
 
         # Get filename without extension
-        archive_file = archive_file_ext.split(".")[0]
+        archive_file, ext = splitext("archive_file_ext")
 
         # upload archive to recieved
         recieved = "/tmp/{}".format(archive_file_ext)
@@ -45,13 +45,13 @@ def do_deploy(archive_path):
         # extract archive into new directory that must be empty if exists
         new_dir_name = "/data/web_static/releases/{}/".format(archive_file)
         run("mkdir -p {}".format(new_dir_name))
-        run("tar -xzf {} -C {}".format(new_dir_name, recieved))
+        run("tar -C {} -xzf {}".format(new_dir_name, recieved))
 
         # delete archive from old folder
         run("rm {}".format(recieved))
 
         run("mv {}/web_static/* {}".format(new_dir_name, new_dir_name))
-        run("rm -rf {}web_static/".format(new_dir_name))
+        run("rm -rf {}/web_static/".format(new_dir_name))
 
         # delete old symlink
         run("rm -rf /data/web_static/current")
