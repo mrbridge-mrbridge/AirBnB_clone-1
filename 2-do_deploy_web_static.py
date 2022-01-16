@@ -44,20 +44,20 @@ def do_deploy(archive_path):
 
         # extract archive into new directory that must be empty if exists
         new_dir_name = "/data/web_static/releases/{}/".format(archive_file)
-        run("mkdir -p {}".format(new_dir_name))
-        run("tar -xzf {} -C {}".format(new_dir_name, recieved))
+        run("sudo mkdir -p {}".format(new_dir_name))
+        run("sudo tar -xzf {} -C {}".format(new_dir_name, recieved))
 
         # delete archive from old folder
-        run("rm {}".format(recieved))
+        run("sudo rm {}".format(recieved))
 
-        run("mv {}/web_static/* {}".format(new_dir_name, new_dir_name))
-        run("rm -rf {}web_static/".format(new_dir_name))
+        run("sudo mv {}/web_static/* {}".format(new_dir_name, new_dir_name))
+        run("sudo rm -rf {}web_static/".format(new_dir_name))
 
         # delete old symlink
-        run("rm -rf /data/web_static/current")
+        run("sudo rm -rf /data/web_static/current")
 
         # create new symlink to extracted files
-        run("ln -s new_dir_name /data/web_static/current")
+        run("sudo ln -s new_dir_name /data/web_static/current")
 
         # when deployed successfully
         print('New version deployed!')
