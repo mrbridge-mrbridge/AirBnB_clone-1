@@ -26,6 +26,7 @@ def do_pack():
     except Exception:
         return None
 
+
 def do_deploy(archive_path):
     """deploys an archive to web-server-1 and web-server-2"""
     if not isfile(archive_path):
@@ -45,19 +46,19 @@ def do_deploy(archive_path):
         # extract archive into new directory that must be empty if exists
         new_dir_name = "/data/web_static/releases/{}/".format(archive_file)
         run("mkdir -p {}".format(new_dir_name))
-        run("tar -xzf {} -C {}".format(new_dir_name, recieved))
+        run("tar -xzf {} -C {}".format(recieved, new_dir_name))
 
         # delete archive from old folder
         run("rm {}".format(recieved))
 
-        run("mv {}/web_static/* {}".format(new_dir_name, new_dir_name))
+        run("mv {}web_static/* {}".format(new_dir_name, new_dir_name))
         run("rm -rf {}web_static/".format(new_dir_name))
 
         # delete old symlink
         run("rm -rf /data/web_static/current")
 
         # create new symlink to extracted files
-        run("ln -s new_dir_name /data/web_static/current")
+        run("ln -s /data/web_static/releases/{}/ /data/web_static/current".format(archive_file))
 
         # when deployed successfully
         print('New version deployed!')
