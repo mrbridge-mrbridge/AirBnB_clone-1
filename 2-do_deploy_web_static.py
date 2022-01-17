@@ -58,7 +58,8 @@ def do_deploy(archive_path):
         run("rm -rf /data/web_static/current")
 
         # create new symlink to extracted files
-        run("ln -s {} data/web_static/current".format(new_dir_name))
+        run("ln -s /data/web_static/releases/{}/ data/web_static/current".
+	    format(archive_file))
 
         # when deployed successfully
         print('New version deployed!')
