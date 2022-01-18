@@ -2,7 +2,7 @@
 """
 deletes out-of-date archives
 """
-from fabric.api import * 
+from fabric.api import *
 from os import listdir
 
 
