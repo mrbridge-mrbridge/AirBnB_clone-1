@@ -13,7 +13,3 @@ class City(BaseModel, Base):
     __tablename__ = 'cities'
     state_id = Column(String(60), nullable=False, ForeignKey('states.id'))
     name = Column(String(128), nullable=False)
-
-    def __init__(self, *args, **kwargs):
-        """initialize city class"""
-        super().__init__(*args, **kwargs)
