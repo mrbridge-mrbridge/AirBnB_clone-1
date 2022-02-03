@@ -120,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
             del dikt[(cls[0] + "." + cls[1])]
             storage.save()
 
-    def do_all(self, arg):
+    def do_all(self, line):
         """All command Prints all string representation of all
         instances based or not on the class name"""
         
