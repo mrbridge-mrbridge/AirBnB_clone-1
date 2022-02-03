@@ -123,7 +123,22 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """All command Prints all string representation of all
         instances based or not on the class name"""
-        cls = arg.split(" ")
+        
+        if not line:
+            o = storage.all()
+            print([o[k].__str__() for k in o])
+            return
+        try:
+            args = line.split(" ")
+            if args[0] not in self.__classes:
+                raise NameError()
+
+            o = storage.all(eval(args[0]))
+            print([o[k].__str__() for k in o])
+
+        except NameError:
+            print("** class doesn't exist **")
+        """cls = arg.split(" ")
         strg = []
 
         if len(cls) == 0:
@@ -138,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
                 print(strg)
 
             elif cls[0] not in classes:
-                print("** class doesn't exist **")
+                print("** class doesn't exist **")"""
 
     def do_update(self, arg):
         """Update command Updates an instance based on the class
