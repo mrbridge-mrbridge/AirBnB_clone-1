@@ -75,3 +75,7 @@ class DBStorage:
         Session = sessionmaker(bind=self.__engine,
                                expire_on_commit=False)
         self.__session = scoped_session(Session)
+
+    def def close(self):
+        """"calls the remove() method of sqlalchemy"""
+        self.__session.remove()
