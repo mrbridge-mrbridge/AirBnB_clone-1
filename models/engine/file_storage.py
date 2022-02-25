@@ -10,12 +10,12 @@ from models.review import Review
 from models.state import State
 
 classes = {"Amenity": Amenity,
-        "BaseModel": BaseModel,
-        "City": City,
-        "Place": Place,
-        "Review": Review,
-        "State": State,
-        "User": User}
+           "BaseModel": BaseModel,
+           "City": City,
+           "Place": Place,
+           "Review": Review,
+           "State": State,
+           "User": User}
 
 
 class FileStorage:
@@ -40,7 +40,6 @@ class FileStorage:
                     cls_dict[k] = v
             return cls_dict
         return self.__objects
-
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
