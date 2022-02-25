@@ -16,7 +16,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 
-classes = {"Amenity": Amenity, 
+classes = {"Amenity": Amenity,
            "BaseModel": BaseModel,
            "City": City,
            "Place": Place,
@@ -27,7 +27,7 @@ classes = {"Amenity": Amenity,
 
 class DBStorage:
     """the DBStotage Class"""
-    
+
     __engine = None
     __session = None
 

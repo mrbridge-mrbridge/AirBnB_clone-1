@@ -11,7 +11,7 @@ from sqlalchemy.orm import relationship
 class State(BaseModel, Base):
     """the Sate class
     class attribute:
-        __tablename__: name of MySQL table 
+        __tablename__: name of MySQL table
         name: string format of state name
         cities: State-City relationship
     """
