@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """starts a Flask application and display strings of words"""
 
 
@@ -26,8 +27,10 @@ def c_text(text):
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def python_text(text='is cool'):
+def python_text(text=None):
     """displays 'Python <text>'"""
+    if text is None:
+        text = 'is cool'
     return 'C {}'.format(text.replace('_', ' '))
 
 
