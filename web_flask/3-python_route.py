@@ -25,13 +25,12 @@ def c_text(text):
     """displays 'C <text>'"""
     return 'C {}'.format(text.replace('_', ' '))
 
+
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def python_text(text=None):
+def python_text(text='is cool'):
     """displays 'Python <text>'"""
-    if text is None:
-        text = 'is cool'
-    return 'C {}'.format(text.replace('_', ' '))
+    return 'Python {}'.format(text.replace('_', ' '))
 
 
 if __name__ == '__main__':
