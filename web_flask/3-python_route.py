@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""starts a Flask application"""
+"""starts a Flask application and display strings of words"""
 
 
 from flask import Flask
