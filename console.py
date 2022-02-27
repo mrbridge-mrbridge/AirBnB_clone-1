@@ -23,6 +23,15 @@ classes = {"Amenity": Amenity,
 class HBNBCommand(cmd.Cmd):
     """The class HBNBCommand"""
     prompt = '(hbnb)'
+    __classes = {
+        "BaseModel",
+        "User",
+        "State",
+        "City",
+        "Amenity",
+        "Place",
+        "Review"
+    }
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
